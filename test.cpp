@@ -13,29 +13,49 @@
 using namespace std;
 
 void show_splash();
+void start_game(string user, string current_location, map<string,location> locs);
 
 
 int main(){
-	cout << "Running\n";
+	//cout << "Running\n";
 	map<string,location> locs;
-	cout << "Created map\n";
+	//cout << "Created map\n";
 
 	locs = parseLocations("locs.dat");
-	cout << "Parsed map\n";
+	//cout << "Parsed map\n";
 
-	cout << locs["CCH"].description << endl;
-	cout << "Accessed map\n\n";
+	//cout << locs["CCH"].description << endl;
+	//cout << "Accessed map\n\n";
 
-	cout << locs["CCH"] << endl;
+	//cout << locs["CCH"] << endl;
 
-	this_thread::sleep_for(chrono::milliseconds(500));
-	show_splash();
+	//this_thread::sleep_for(chrono::milliseconds(500));
+	//show_splash();
+	
+	start_game("brian", "CCH", locs);
 
 	return 0;
 }
 
-void start_game() {
+void start_game(string user, string current_location, map<string,location> locs) {
+	string input;
+	cout << "Current Location:\n" <<  locs[current_location].description << endl;
+	cout << "Exits:\n" << locs[current_location].list_exits() << endl;
+	cout << "Objects:\n" << locs[current_location].list_objects() << endl;
+
+	cout << "type an exit or object to interact:\n>> ";
+	getline(cin, input);
 	
+	map<string,string>::iterator l = locs[current_location].exits.find(input);
+	map<string,string>::iterator o = locs[current_location].objects.find(input);
+	
+	if (l != locs[current_location].exits.end()) {
+		cout << "Moving to " << l->first << endl;
+	} else if (o != locs[current_location].objects.end()) {
+		cout << "Interacting with " << o->first << endl;
+	} else {
+		cout << "Unknown command \"" << input << "\"\n";
+	}
 }
 
 void show_splash() {
