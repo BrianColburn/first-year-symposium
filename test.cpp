@@ -39,23 +39,27 @@ int main(){
 
 void start_game(string user, string current_location, map<string,location> locs) {
 	string input;
-	cout << "Current Location:\n" <<  locs[current_location].description << endl;
-	cout << "Exits:\n" << locs[current_location].list_exits() << endl;
-	cout << "Objects:\n" << locs[current_location].list_objects() << endl;
+	do {
+		location loc = locs[current_location];
+		cout << "\e[H\e[2JCurrent Location:\n" <<  loc.description << endl;
+		cout << "Exits:\n" << loc.list_exits() << endl;
+		cout << "Objects:\n" << loc.list_objects() << endl;
 
-	cout << "type an exit or object to interact:\n>> ";
-	getline(cin, input);
-	
-	map<string,string>::iterator l = locs[current_location].exits.find(input);
-	map<string,string>::iterator o = locs[current_location].objects.find(input);
-	
-	if (l != locs[current_location].exits.end()) {
-		cout << "Moving to " << l->first << endl;
-	} else if (o != locs[current_location].objects.end()) {
-		cout << "Interacting with " << o->first << endl;
-	} else {
-		cout << "Unknown command \"" << input << "\"\n";
-	}
+		cout << "type an exit or object to interact:\n>> ";
+		getline(cin, input);
+		
+		map<string,string>::iterator l = loc.exits.find(input);
+		map<string,string>::iterator o = loc.objects.find(input);
+		
+		if (l != loc.exits.end()) {
+			cout << "Moving to " << l->first << endl;
+			current_location = l->first;
+		} else if (o != loc.objects.end()) {
+			cout << "Interacting with " << o->first << endl;
+		} else {
+			cout << "Unknown command \"" << input << "\"\n";
+		}
+	} while (input != "drop out");
 }
 
 void show_splash() {

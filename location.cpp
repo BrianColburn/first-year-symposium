@@ -1,4 +1,5 @@
 #include "location.h"
+#include <locale>
 
 std::ostream& operator<<(std::ostream &strm, const location &l) {
 	  return strm << l.description;
@@ -22,6 +23,7 @@ map<string, location> parseLocations(string filename) {
 			   loc.name = line;
 			   //cout << loc.uid << endl << loc.name << endl;
 			} else if (line =="begin-description") {
+				loc.description = "";
 				getline(locFile, line);
 				//cout << line << endl;
 				while (line != "end-description") {
@@ -36,6 +38,11 @@ map<string, location> parseLocations(string filename) {
 					string uid = line;
 					string description;
 					getline(locFile, description);
+					
+					int start = description.find(uid);
+					if (start != string::npos) {
+						description.replace(start, uid.length(), "\e[93m" + uid + "\e[0m");
+					}
 					
 					exits[uid] = description;
 					
