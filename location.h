@@ -8,19 +8,26 @@
 
 using namespace std;
 
+class object {
+	public:
+		string uid,
+			   name,
+			   description;
+};
+
 class location {
 	public:
 		string uid,
 			   name,
 			   description;
 		map<string, string> exits;
-		map<string, string> objects;
+		map<string, object> objects;
 		friend std::ostream& operator<<(std::ostream&, const location&);
 
 		string list_objects() {
 			string result = "";
-			for (map<string, string>::iterator object = objects.begin(); object != objects.end(); ++object) {
-				result += "[" + object->first + "]: " +  object->second;
+			for (map<string, object>::iterator object = objects.begin(); object != objects.end(); ++object) {
+				result += "[" + object->first + "]: " +  object->second.description;
 				result += "\n";
 			}
 			return result;
@@ -37,3 +44,5 @@ class location {
 };
 
 map<string, location> parseLocations(string);
+
+map<string, object> parseObjects(ifstream);
