@@ -14,20 +14,20 @@ map<string, location> parseLocations(string filename) {
 
 	if (locFile.is_open()) {
 		while (getline(locFile, line)) {
-			//cout << line << endl;
+			cout << line << endl;
 			if (line == "") {
 			} else if (line =="begin-location") {
 			   getline(locFile, line);
 			   loc.uid = line;
 			   getline(locFile, line);
 			   loc.name = line;
-			   //cout << loc.uid << endl << loc.name << endl;
+			   cout << loc.uid << endl << loc.name << endl;
 			} else if (line =="begin-description") {
 				loc.description = "";
 				getline(locFile, line);
-				//cout << line << endl;
+				cout << line << endl;
 				while (line != "end-description") {
-					//cout << line << endl;
+					cout << line << endl;
 					loc.description += line + "\n";
 					getline(locFile, line);
 				}
@@ -50,18 +50,42 @@ map<string, location> parseLocations(string filename) {
 				}
 				loc.exits = exits;
 			} else if (line == "begin-objects") {
-				map<string,string> objects;
+				map<string,object> objects;
 				getline(locFile, line);
 				while (line != "end-objects") {
-					string uid = line;
-					string description;
-					getline(locFile, description);
-					
-					objects[uid] = description;
-					
-					getline(locFile, line);
+					object obj;
+
+						while (line != "end-object") {
+							cout << line << endl;
+							if (line == "") {
+							} else if (line =="begin-object") {
+								cout << "Parsing the object\n";
+							   getline(locFile, line);
+							   obj.uid = line;
+							   getline(locFile, line);
+							   obj.name = line;
+							   //cout << obj.uid << endl << obj.name << endl;
+							} else if (line =="begin-description") {
+								obj.description = "";
+								//cout << line << endl;
+								while (line != "end-description") {
+									cout << line << endl;
+									getline(locFile, line);
+									obj.description += line + "\n";
+									cout << line << endl;
+								}
+								cout << "exited desc\n";
+							} else {
+								cout << "Unknown directive: " << line << endl;
+							}
+							getline(locFile, line);
+						}
+						objects[obj.uid] = obj;
+						cout << "Added the object\n";
+						getline(locFile, line);
 				}
 				loc.objects = objects;
+				cout << "Set the objects\n";
 			} else if (line =="end-location") {
 				locations[loc.uid] = loc;
 			} else {
@@ -70,9 +94,46 @@ map<string, location> parseLocations(string filename) {
 		}
 	}
 
-	//cout << "Closing file\n";
+	cout << "Closing file\n";
 
 	locFile.close();
 
 	return locations;
+}
+
+map<string, object> parseObjects(ifstream objFile) {
+	//objFile.open(filename.c_str());
+	string line;
+	map<string, object> objects;
+	object obj;
+
+	if (objFile.is_open()) {
+		getline(objFile, line);
+		while (line != "end-objects") {
+			cout << line << endl;
+			if (line == "") {
+			} else if (line =="begin-object") {
+				cout << "Parsing the object\n";
+			   getline(objFile, line);
+			   obj.uid = line;
+			   getline(objFile, line);
+			   obj.name = line;
+			   cout << obj.uid << endl << obj.name << endl;
+			} else if (line =="begin-description") {
+				obj.description = "";
+				getline(objFile, line);
+				cout << 1 << line << endl;
+				while (line != "end-description") {
+					cout << 2 << line << endl;
+					obj.description += line + "\n";
+					getline(objFile, line);
+				}
+			} else {
+				cout << "Unknown directive: " << line << endl;
+			}
+			getline(objFile, line);
+		}
+	}
+
+	return objects;
 }
