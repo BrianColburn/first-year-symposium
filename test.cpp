@@ -17,12 +17,12 @@ void start_game(string user, string current_location, map<string,location> locs)
 
 
 int main(){
-	//cout << "Running\n";
+	cout << "Running\n";
 	map<string,location> locs;
 	//cout << "Created map\n";
 
 	locs = parseLocations("locs.dat");
-	//cout << "Parsed map\n";
+	cout << "Parsed map\n";
 
 	//cout << locs["CCH"].description << endl;
 	//cout << "Accessed map\n\n";
@@ -50,8 +50,8 @@ void start_game(string user, string current_location, map<string,location> locs)
 		getline(cin, input);
 
 		map<string,string>::iterator l = loc.exits.find(input);
-		map<string,string>::iterator o = loc.objects.find(input);
-
+		map<string,object>::iterator o = loc.objects.find(input);
+    
 		if (l != loc.exits.end()) {
 			cout << "Moving to " << l->first << endl;
 			current_location = l->first;
