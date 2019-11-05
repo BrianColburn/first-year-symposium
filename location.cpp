@@ -68,11 +68,10 @@ map<string, location> parseLocations(string filename) {
 							} else if (line =="begin-description") {
 								obj.description = "";
 								//cout << line << endl;
+								getline(locFile, line);
 								while (line != "end-description") {
-									cout << line << endl;
-									getline(locFile, line);
 									obj.description += line + "\n";
-									cout << line << endl;
+									getline(locFile, line);
 								}
 								cout << "exited desc\n";
 							} else {
