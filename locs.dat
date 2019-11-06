@@ -12,6 +12,8 @@ stairs
 There are stairs leading up
 OCNR Plaza
 OCNR Plaza is to the South
+example
+This is an example exit. The location ID is "example".
 end-exits
 
 begin-objects
@@ -48,4 +50,33 @@ end-exits
 begin-objects
 end-objects
 
+end-location
+
+
+begin-location
+example
+An example location
+
+begin-description
+The limitless possibilities of text
+stretch out before you.
+Nearly anything can be put here.
+end-description
+
+begin-exits
+CCH
+There is a path back to Corpus Christi Hall.
+end-exits
+
+begin-objects
+
+begin-object
+object1
+object1's name
+begin-description
+This is the description for object1
+end-description
+end-object
+
+end-objects
 end-location
