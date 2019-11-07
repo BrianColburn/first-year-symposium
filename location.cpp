@@ -50,40 +50,7 @@ map<string, location> parseLocations(string filename) {
 				}
 				loc.exits = exits;
 			} else if (line == "begin-objects") {
-				map<string,object> objects;
-				getline(locFile, line);
-				while (line != "end-objects") {
-					object obj;
-
-						while (line != "end-object") {
-							cout << line << endl;
-							if (line == "") {
-							} else if (line =="begin-object") {
-								cout << "Parsing the object\n";
-							   getline(locFile, line);
-							   obj.uid = line;
-							   getline(locFile, line);
-							   obj.name = line;
-							   //cout << obj.uid << endl << obj.name << endl;
-							} else if (line =="begin-description") {
-								obj.description = "";
-								//cout << line << endl;
-								getline(locFile, line);
-								while (line != "end-description") {
-									obj.description += line + "\n";
-									getline(locFile, line);
-								}
-								cout << "exited desc\n";
-							} else {
-								cout << "Unknown directive: " << line << endl;
-							}
-							getline(locFile, line);
-						}
-						objects[obj.uid] = obj;
-						cout << "Added the object\n";
-						getline(locFile, line);
-				}
-				loc.objects = objects;
+				loc.objects = parseObjects(locFile);
 				cout << "Set the objects\n";
 			} else if (line =="end-location") {
 				locations[loc.uid] = loc;
@@ -100,36 +67,49 @@ map<string, location> parseLocations(string filename) {
 	return locations;
 }
 
-map<string, object> parseObjects(ifstream objFile) {
-	//objFile.open(filename.c_str());
+map<string, object> parseObjects(ifstream& objFile) {
 	string line;
-	map<string, object> objects;
-	object obj;
+	map<string,object> objects;
 
 	if (objFile.is_open()) {
 		getline(objFile, line);
 		while (line != "end-objects") {
-			cout << line << endl;
-			if (line == "") {
-			} else if (line =="begin-object") {
+			//cout << line << endl;
+
+			if (line == "begin-object") {
+				object obj;
+
 				cout << "Parsing the object\n";
-			   getline(objFile, line);
-			   obj.uid = line;
-			   getline(objFile, line);
-			   obj.name = line;
-			   cout << obj.uid << endl << obj.name << endl;
-			} else if (line =="begin-description") {
-				obj.description = "";
+					cout << line << endl;
 				getline(objFile, line);
-				cout << 1 << line << endl;
-				while (line != "end-description") {
-					cout << 2 << line << endl;
-					obj.description += line + "\n";
+				obj.uid = line;
+				getline(objFile, line);
+				obj.name = line;
+				cout << "Object: " << obj.uid << ", " << obj.name << endl;
+
+				getline(objFile, line);
+
+				while (line != "end-object") {
+					cout << line << endl;
+					if (line == "") {
+					} else if (line =="begin-description") {
+						obj.description = "";
+						//cout << line << endl;
+						getline(objFile, line);
+						while (line != "end-description") {
+							cout << line << endl;
+							obj.description += line + "\n";
+							getline(objFile, line);
+						}
+						cout << "exited desc\n";
+					} else {
+						cout << "Unknown directive: " << line << endl;
+					}
 					getline(objFile, line);
 				}
-			} else {
-				cout << "Unknown directive: " << line << endl;
+				objects[obj.uid] = obj;
 			}
+			cout << "Added the object\n";
 			getline(objFile, line);
 		}
 	}

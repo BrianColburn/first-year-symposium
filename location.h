@@ -45,4 +45,4 @@ class location {
 
 map<string, location> parseLocations(string);
 
-map<string, object> parseObjects(ifstream);
+map<string, object> parseObjects(ifstream&);
