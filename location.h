@@ -20,8 +20,11 @@ class location {
 		string uid,
 			   name,
 			   description;
-		map<string, string> exits;
-		map<string, object> objects;
+		map<string, string> exits; // maps from the exit UID to
+		                           // the local description of that exit.
+		map<string, object> objects; // maps from the object ID to
+		                             // the local representation of that
+									 // object
 		friend std::ostream& operator<<(std::ostream&, const location&);
 
 		string list_objects() {
@@ -43,6 +46,9 @@ class location {
 		}
 };
 
+// Parse the locations stored in a given file.
 map<string, location> parseLocations(string);
 
+// Parse the objects stored in a given stream.
+// Called by parseLocations
 map<string, object> parseObjects(ifstream&);

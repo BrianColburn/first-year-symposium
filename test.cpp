@@ -38,6 +38,9 @@ int main(){
 	return 0;
 }
 
+/* start_game currently functions as the main loop.
+ * It handles the interaction between the user and the locations.
+ */
 void start_game(string user, string current_location, map<string,location> locs) {
 	string input;
 	do {
@@ -49,6 +52,8 @@ void start_game(string user, string current_location, map<string,location> locs)
 		cout << "type an exit or object to interact:\n>> ";
 		getline(cin, input);
 
+		// Determine if the user meant to interact with their
+		// environment.
 		map<string,string>::iterator l = loc.exits.find(input);
 		map<string,object>::iterator o = loc.objects.find(input);
     
@@ -63,6 +68,7 @@ void start_game(string user, string current_location, map<string,location> locs)
 	} while (input != "drop out");
 }
 
+// Show the amazing 32 frame splash screen.
 void show_splash() {
 	string frame[32] = {
 		"  ___            \n |__ \\\n   / /\n  |_|\n  (_)\n",

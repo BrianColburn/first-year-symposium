@@ -5,6 +5,30 @@ std::ostream& operator<<(std::ostream &strm, const location &l) {
 	  return strm << l.description;
 }
 
+/* parseLocations returns a mapping from the unique ID of a location
+ * to the object that represents that location.
+ *
+ *
+ * The format for location files is this:
+ *
+ * begin-location
+ * $uid
+ * $name
+ * begin-description
+ * $description
+ * end-description
+ * begin-exits
+ * $exit-uid
+ * $exit-local-description
+ * ...
+ * end-exits
+ * begin-objects
+ * $OBJECT FORMAT
+ * end-objects
+ * end-location
+ *
+ * objects are parsed with the function parseObjects
+ */
 map<string, location> parseLocations(string filename) {
 	ifstream locFile(filename.c_str());
 	//locFile.open(filename.c_str());
@@ -67,6 +91,23 @@ map<string, location> parseLocations(string filename) {
 	return locations;
 }
 
+/* parseObjects is a helper function called by parseLocations
+ * It receives the stream being read and begins parsing where
+ * parseLocations left off and returns a mapping from the
+ * non-unique id of an object to the representation of that
+ * object.
+ *
+ * 
+ * The format for object definitions is:
+ * 
+ * begin-object
+ * $id
+ * $name
+ * begin-description
+ * $description
+ * end-description
+ * end-object
+ */
 map<string, object> parseObjects(ifstream& objFile) {
 	string line;
 	map<string,object> objects;
