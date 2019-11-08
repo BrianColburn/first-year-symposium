@@ -91,7 +91,6 @@ The Performing Arts Center
 It has three floors
 The center stage is surrounded by endless rows of seats
 end description
-
 begin-exits
 There is a path that leads back to the OCNR Plaza and the CCH.
 end-exits
@@ -106,6 +105,24 @@ SSC
 Student Services Center (Round Building)
 
 begin-description
+The Student Services Center
 The placeholder
+It has two floors
 end-description
+end-location
+
+begin-locatin
+UC
+University Center
+
+begin-description
+The University Center
+It has three floors
+A cafeteria, bookstore, and gameroom surround the huge, round room filled wih seats
+Multiple rooms are held for events/meetings
+end-description
+
+begin-exits
+end-exits
+
 end-location
