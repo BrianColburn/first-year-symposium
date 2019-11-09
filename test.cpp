@@ -13,6 +13,8 @@
 using namespace std;
 
 void show_splash();
+void menu(map<string,location> locs);
+void credits();
 void start_game(string user, string current_location, map<string,location> locs);
 
 
@@ -31,9 +33,9 @@ int main(){
 
 	std::cout << "Displaying splash!" << '\n';
 	show_splash();
-	this_thread::sleep_for(chrono::milliseconds(1000));
+	menu(locs);
 
-	start_game("brian", "CCH", locs);
+	
 
 	return 0;
 }
@@ -103,4 +105,41 @@ void show_splash() {
 		cout << "\e[H\e[2J";
 		cout << frame[i];
 		this_thread::sleep_for(chrono::milliseconds(80));}
+}
+
+void menu(map<string,location> locs) {
+	cout << "\n";
+	cout << "\n";
+	cout << "\n";
+	cout << "WELCOME TO THE GAME, PLAYER!\n";
+	cout << "TO BEGIN, JUST SELECT ONE OF THE MENU OPTIONS \n";
+	cout << "BY SELECTING THE CORRESPONDING NUMBERS!";
+	cout << "\n";
+	cout << "\n";
+	cout << "	1. start\n";
+	cout << "\n";
+	cout << "	2. resume\n";
+	cout << "\n";
+	cout << "	3. credits\n";
+	cout << "\n";
+
+	char choice;
+	do {
+		choice = getch();
+
+		switch (choice)
+		{
+		  case '1': start_game("brian", "CCH", locs);
+			break;
+		  case '2': start_game("brian", "CCH", locs);
+			break;
+		  case '3': credits();
+			break;
+		  default: cout << "You don't seem to have entered a valid choice!";
+		}
+	} while (choice < 1 || choice > 3);
+}
+
+void credits() {
+	cout << "The credits\n";
 }
