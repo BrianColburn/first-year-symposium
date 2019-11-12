@@ -20,6 +20,8 @@ begin-objects
 begin-object
 id
 sand-dollar
+points
+5
 begin-description
 A SandDollar ID is on the ground
 end-description
