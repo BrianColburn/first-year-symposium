@@ -196,3 +196,116 @@ The placeholder
 end-description
 end-location
 >>>>>>> Started adding new locations.
+=======
+begin-location
+CCH
+Corpus Christi Hall
+
+begin-description
+The Corpus Christi Hall.
+It has two floors.
+A view of the bay is visible from the north of CCH.
+end-description
+
+begin-exits
+stairs
+There are stairs leading up
+OCNR Plaza
+OCNR Plaza is to the South
+example
+This is an example exit. The location ID is "example".
+end-exits
+
+begin-objects
+begin-object
+id
+sand-dollar
+begin-description
+A SandDollar ID is on the ground
+end-description
+end-object
+end-objects
+
+end-location
+
+
+begin-location
+OCNR Plaza
+The Plaza in front of the O'Conner Building
+
+begin-description
+A fountain is running.
+The trees rustle in the wind.
+end-description
+
+begin-exits
+CCH
+Corpus Christi Hall is to the North
+BW1
+The Library Breezeway is to the South
+SSC
+The well known "Round Building" is to the South-East
+end-exits
+
+begin-objects
+end-objects
+
+end-location
+
+
+begin-location
+example
+An example location
+
+begin-description
+The limitless possibilities of text
+stretch out before you.
+Nearly anything can be put here.
+end-description
+
+begin-exits
+CCH
+There is a path back to Corpus Christi Hall.
+end-exits
+
+begin-objects
+
+begin-object
+object1
+object1's name
+begin-description
+This is the description for object1
+end-description
+end-object
+
+end-objects
+end-location
+
+begin-location
+PAC
+Performing Arts Center
+
+begin-description
+The Performing Arts Center
+It has three floors
+The center stage is surrounded by endless rows of seats
+end description
+
+begin-exits
+There is a path that leads back to the OCNR Plaza and the CCH.
+end-exits
+
+begin-objects
+end-objects
+
+end-locations
+
+begin-location
+SSC
+Student Services Center (Round Building)
+
+begin-description
+The placeholder
+end-description
+end-location
+>>>>>>> ba10b4bcae5ddb6d43dda42d4c819333e4b9e87d
