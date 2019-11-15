@@ -13,6 +13,7 @@ class object {
 		string uid,
 			   name,
 			   description;
+		int points = 0;
 };
 
 class location {

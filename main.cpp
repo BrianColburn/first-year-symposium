@@ -1,5 +1,11 @@
 #include <chrono>
 #include <thread>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <iomanip>
 
 #include "location.h"
 #include "getch.h"
@@ -14,6 +20,7 @@ using namespace std;
 
 void show_splash();
 void menu(map<string,location> locs);
+void highscores();
 void credits();
 void start_game(string user, string current_location, map<string,location> locs);
 
@@ -41,7 +48,11 @@ int main(){
 }
 
 void start_game(string user, string current_location, map<string,location> locs) {
+	int points = 0;
 	string input;
+	getline(cin, input);
+	cout << "You must make your way to corpus Christi Hall (CCH) and register for classes!\n...";
+	getch();
 	do {
 		location loc = locs[current_location];
 		cout << "\e[H\e[2JCurrent Location:\n" <<  loc.description << endl;
@@ -58,11 +69,41 @@ void start_game(string user, string current_location, map<string,location> locs)
 			cout << "Moving to " << l->first << endl;
 			current_location = l->first;
 		} else if (o != loc.objects.end()) {
+			object obj = o->second;
 			cout << "Interacting with " << o->first << endl;
+			if (obj.points) {
+				cout << "You gained " << obj.points << " points!\n";
+				points += obj.points;
+				cout << "You now have " << points << " points.\n";
+			}
+			getch();
 		} else {
-			cout << "Unknown command \"" << input << "\"\n";
+			vector<string> vinput;
+			stringstream ss(input);
+			string tmp;
+			while (ss >> tmp) vinput.push_back(tmp);
+
+			if (vinput.size() > 0 && vinput[0] == "add" && vinput[1] == "exit") {
+				locs[current_location].exits[vinput[2]] = "Custom exit";
+				cout << loc.list_exits();
+			} else
+				cout << "Unknown command \"" << input << "\"\n";
 		}
-	} while (input != "drop out");
+	} while (input != "quit");
+	char leaveScore;
+	cout << "Do you want to save your score? (Y/n)\n";
+	leaveScore = getch();
+	if ((leaveScore & 95) == 'Y') {
+		string scoreName;
+		cout << "Please enter a three letter name: ";
+		cin >> scoreName;
+		scoreName = scoreName.substr(0,3);
+		cout << setw(2) << points << ":  " << scoreName << endl;
+		ofstream ofscores("highscores.dat", ios_base::app);
+		ofscores << points << " " << scoreName << endl;
+	}
+	cout << "\n\nHighscores:\n";
+	highscores();
 }
 
 void show_splash() {
@@ -118,28 +159,58 @@ void menu(map<string,location> locs) {
 	cout << "\n";
 	cout << "	1. start\n";
 	cout << "\n";
-	cout << "	2. resume\n";
+	cout << "	2. highscores\n";
 	cout << "\n";
 	cout << "	3. credits\n";
 	cout << "\n";
+	cout << "	4. exit\n";
+	cout << "\n";
 
 	char choice;
+	string tmp;
 	do {
 		choice = getch();
 
 		switch (choice)
 		{
-		  case '1': start_game("brian", "CCH", locs);
-			break;
-		  case '2': start_game("brian", "CCH", locs);
-			break;
-		  case '3': credits();
-			break;
-		  default: cout << "You don't seem to have entered a valid choice!";
+			case '1': 
+				cout << "\nEnter your name: ";
+				cin >> tmp;
+				start_game(tmp, "CCH", locs);
+				break;
+			case '2':
+				highscores();
+				break;
+			case '3':
+				credits();
+				break;
+			case '4':
+				cout << "Have a great day!\n";
+				break;
+			default:
+				cout << "You don't seem to have entered a valid choice!";
 		}
-	} while (choice < 1 || choice > 3);
+	} while (choice < '1' || choice > '4');
 }
 
 void credits() {
 	cout << "The credits\n";
+}
+
+void highscores() {
+	ifstream ifscores("highscores.dat");
+	vector<pair<int,string>> vscores;
+	string tmp;
+	while (ifscores >> tmp) {
+		pair<int,string> entry;
+		entry.first = stoi(tmp);
+		ifscores >> tmp;
+		entry.second = tmp;
+		vscores.push_back(entry);
+	}
+	sort(vscores.begin(), vscores.end());
+	reverse(vscores.begin(), vscores.end());
+	for (int i = 0; i < vscores.size(); i++) {
+		cout << setw(2) << vscores[i].first << ":  " << vscores[i].second << endl;
+	}
 }
