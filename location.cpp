@@ -143,6 +143,9 @@ map<string, object> parseObjects(ifstream& objFile) {
 							getline(objFile, line);
 						}
 						cout << "exited desc\n";
+					} else if (line == "points") {
+						getline(objFile, line);
+						obj.points = stoi(line);
 					} else {
 						cout << "Unknown directive: " << line << endl;
 					}

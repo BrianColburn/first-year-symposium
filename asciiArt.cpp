@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 using namespace std;
+int choice;
 int main ()
 {
 
@@ -46,5 +47,31 @@ int main ()
     cout << frame[i];
     this_thread::sleep_for(chrono::milliseconds(80));
   }
+cout << "\n";
+cout << "\n";
+cout << "\n";
+cout << "WELCOME TO THE GAME, PLAYER!\n";
+cout << "TO BEGIN, JUST SELECT ONE OF THE MENU OPTIONS \n";
+cout << "BY SELECTING THE CORRESPONDING NUMBERS!";
+cout << "\n";
+cout << "\n";
+cout << "	1. start\n";
+cout << "\n";
+cout << "	2. resume\n";
+cout << "\n";
+cout << "	3. credits\n";
+cout << "\n";
+cin >> choice;
+
+switch (choice)
+{
+  case '1': start_game();
+    break;
+  case '2': resume();
+    break;
+  case '3': credits();
+    break;
+  default: cout << "You don't seem to have entered a valid choice!";
+}
 return 0;
 }
