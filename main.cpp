@@ -59,8 +59,6 @@ int main(){
 void start_game(string user, string current_location, map<string,location> locs) {
 	int points = 0; // Set the player's points to 0.
 	string input; // Reserve space for storing the user's input.
-	getline(cin, input); // Something funky happens with the input buffer.
-	                     //   This prevents the game from immediatly crashing :/
 	int loop = 0; // How long has the player been in this location?
 
 	getch(); // Wait for the user to press any key.
