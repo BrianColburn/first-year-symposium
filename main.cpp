@@ -71,7 +71,7 @@ void start_game(string user, string current_location, map<string,location> locs)
 		}
 
 		//Tell the player where they are, where they can go, and what they can touch.
-		cout << "\e[H\e[2JCurrent Location:\n" <<  loc.description << endl;
+		cout << "\e[H\e[2JCurrent Location: " << loc.name << endl <<  loc.description << endl;
 		cout << "Exits:\n" << loc.list_exits() << endl;
 		cout << "Objects:\n" << loc.list_objects() << endl;
 
@@ -101,8 +101,22 @@ void start_game(string user, string current_location, map<string,location> locs)
 				points += obj.points;
 				cout << "You now have " << points << " points.\n";
 			}
+
+			if (obj.uses > 0) { // Check if the object has a limited number of uses.
+				obj.uses--; // Decrease the remaining uses.
+				
+				if (!obj.uses) { // No more uses
+					locs[current_location].objects.erase(obj.uid);
+				}
+			}
+
 			cout << "...";
 			getch(); // Wait for a keypress
+
+			if (obj.directive != "") {
+				cout << "\e[H\e[2J" << obj.directive << "\n...";
+				getch();
+			}
 		}
 
 		else { // We have determined that the player did not type the name of

@@ -178,12 +178,30 @@ map<string, object> parseObjects(ifstream& objFile) {
 							obj.description += line + "\n";
 							getline(objFile, line);
 						}
+
+						int start = obj.description.find(obj.uid); // Search the description of the exit
+																   //   for the exit's UID.
+																   //   If it's found, highlight it.
+						if (start != string::npos) {
+							obj.description.replace(start, obj.uid.length(), "\e[32m" + obj.uid + "\e[0m");
+						}
+
 						cout << "exited desc\n"; // Still doing okay.
 					}
 					
 					else if (line == "points") { // This object is worth something.
 						getline(objFile, line);
 						obj.points = stoi(line); // Convert the value from text to an integer.
+					}
+					
+					else if (line == "uses") { // This object has a limited number of uses.
+						getline(objFile, line);
+						obj.uses = stoi(line); // Convert the value from text to an integer.
+					}
+					
+					else if (line == "directive") { // This object has a directive.
+						getline(objFile, line);
+						obj.directive = line;
 					}
 					
 					else { // Apparently we aren't sane.

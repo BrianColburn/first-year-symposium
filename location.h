@@ -12,8 +12,10 @@ class object {
 	public:
 		string uid,
 			   name,
-			   description;
-		int points = 0;
+			   description,
+			   directive;
+		int points = 0,
+			uses = 0;
 };
 
 class location {
