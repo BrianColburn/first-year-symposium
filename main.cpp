@@ -61,11 +61,16 @@ void start_game(string user, string current_location, map<string,location> locs)
 	string input; // Reserve space for storing the user's input.
 	getline(cin, input); // Something funky happens with the input buffer.
 	                     //   This prevents the game from immediatly crashing :/
+	int loop = 0; // How long has the player been in this location?
 
-	cout << "You must make your way to corpus Christi Hall (CCH) and register for classes!\n...";
 	getch(); // Wait for the user to press any key.
 	do {
 		location loc = locs[current_location]; // This basically just saves typing.
+
+		if (!loop && loc.directive != "") { // If we haven't looped and there is a directive, 
+			cout << loc.directive << "\n..."; // display the directive and wait.
+			getch();
+		}
 
 		//Tell the player where they are, where they can go, and what they can touch.
 		cout << "\e[H\e[2JCurrent Location:\n" <<  loc.description << endl;
@@ -84,7 +89,9 @@ void start_game(string user, string current_location, map<string,location> locs)
 			cout << "Moving to " << pExit->first << endl; // Not crazy, we are moving.
 			current_location = pExit->first; // Change our current location.
 			                                 //   This will take effect on the next game tick.
+			loop = -1; // Becomes zero when we loop into the new location.
 		}
+
 		else if (pObj != loc.objects.end()) {
 			object obj = pObj->second; // The object does exist, so we get its info.
 			cout << "Interacting with " << pObj->first << endl; // Sane
@@ -99,6 +106,7 @@ void start_game(string user, string current_location, map<string,location> locs)
 			cout << "...";
 			getch(); // Wait for a keypress
 		}
+
 		else { // We have determined that the player did not type the name of
 			   //   an exit or an object. Now we check if they meant something
 			   //   more complex.
@@ -119,6 +127,7 @@ void start_game(string user, string current_location, map<string,location> locs)
 			// We don't know what to do with the player's input.
 			else cout << "Unknown command \"" << input << "\"\n";
 		}
+		loop++;
 	} while (input != "quit"); // If they want to quit, stop the game loop.
 
 	char leaveScore; // Set aside space for a letter.
@@ -212,7 +221,7 @@ void menu(map<string,location> locs) {
 			case '1': // They want to play the game
 				cout << "\nEnter your name: ";
 				cin >> tmp;
-				start_game(tmp, "CCH", locs);
+				start_game(tmp, "PAC", locs);
 				break;
 			case '2': // They want to view the high scores
 				highscores();

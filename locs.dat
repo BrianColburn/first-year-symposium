@@ -94,7 +94,12 @@ begin-description
 The Performing Arts Center
 It has three floors
 The center stage is surrounded by endless rows of seats
+
+You are here for your first-year orientation.
 end-description
+
+directive
+You must make your way to corpus Christi Hall (CCH) and register for classes!
 
 begin-exits
 CCH

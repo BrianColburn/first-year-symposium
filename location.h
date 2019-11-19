@@ -20,7 +20,8 @@ class location {
 	public:
 		string uid,
 			   name,
-			   description;
+			   description,
+			   directive;
 		map<string, string> exits; // maps from the exit UID to
 		                           // the local description of that exit.
 		map<string, object> objects; // maps from the object ID to

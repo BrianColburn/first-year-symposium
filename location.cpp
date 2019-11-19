@@ -45,11 +45,12 @@ map<string, location> parseLocations(string filename) {
 			
 			else if (line =="begin-location") { // Read in the ID and name of the
 				                                  //   location.
-			   getline(locFile, line);
-			   loc.uid = line;
-			   getline(locFile, line);
-			   loc.name = line;
-			   cout << loc.uid << endl << loc.name << endl;
+				getline(locFile, line);
+				loc.uid = line;
+				getline(locFile, line);
+				loc.name = line;
+				cout << loc.uid << endl << loc.name << endl;
+				loc.directive = "";
 			}
 			
 			else if (line =="begin-description") {
@@ -64,6 +65,11 @@ map<string, location> parseLocations(string filename) {
 					loc.description += line + "\n";
 					getline(locFile, line);
 				}
+			}
+
+			else if (line =="directive") { // This location has a directive
+				getline(locFile, line);
+				loc.directive = line;
 			}
 			
 			else if (line == "begin-exits") {
