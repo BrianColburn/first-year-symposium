@@ -12,15 +12,18 @@ class object {
 	public:
 		string uid,
 			   name,
-			   description;
-		int points = 0;
+			   description,
+			   directive;
+		int points = 0,
+			uses = 0;
 };
 
 class location {
 	public:
 		string uid,
 			   name,
-			   description;
+			   description,
+			   directive;
 		map<string, string> exits; // maps from the exit UID to
 		                           // the local description of that exit.
 		map<string, object> objects; // maps from the object ID to

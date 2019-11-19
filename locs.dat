@@ -1,4 +1,31 @@
 begin-location
+PAC
+Performing Arts Center
+
+begin-description
+The Performing Arts Center
+It has three floors
+The center stage is surrounded by endless rows of seats
+
+You are here for your first-year orientation.
+end-description
+
+directive
+You must make your way to corpus Christi Hall (CCH) and register for classes!
+
+begin-exits
+CCH
+There is a path that leads back to the OCNR Plaza and the CCH.
+end-exits
+
+begin-objects
+end-objects
+
+end-location
+
+
+
+begin-location
 CCH
 Corpus Christi Hall
 
@@ -9,14 +36,14 @@ A view of the bay is visible from the north of CCH.
 end-description
 
 begin-exits
-stairs
-There are stairs leading up
+CCH2
+There are stairs leading to the second floor
 OCNR Plaza
 OCNR Plaza is to the South
 example
 This is an example exit. The location ID is "example".
 PAC
-The PAC exists
+There is a winding path to the PAC
 end-exits
 
 begin-objects
@@ -32,6 +59,39 @@ end-object
 end-objects
 
 end-location
+
+
+
+begin-location
+CCH2
+Corpus Christi Hall - 2nd Floor
+
+begin-description
+The second floor of Corpus Christi Hall is an impressive computer lab.
+end-description
+
+begin-objects
+begin-object
+register
+registration
+points
+10
+uses
+1
+directive
+You are now free to explore and contribute to the campus! If you want, you can go get a parking permit.
+begin-description
+Use a computer to register for classes
+end-description
+end-object
+end-objects
+
+begin-exits
+CCH
+There are stairs leading to ground level
+end-exits
+end-location
+
 
 
 begin-location
@@ -84,26 +144,6 @@ end-description
 end-object
 
 end-objects
-end-location
-
-begin-location
-PAC
-Performing Arts Center
-
-begin-description
-The Performing Arts Center
-It has three floors
-The center stage is surrounded by endless rows of seats
-end-description
-
-begin-exits
-CCH
-There is a path that leads back to the OCNR Plaza and the CCH.
-end-exits
-
-begin-objects
-end-objects
-
 end-location
 
 begin-location
