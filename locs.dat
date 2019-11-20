@@ -146,11 +146,85 @@ end-object
 end-objects
 end-location
 
+
+
 begin-location
 SSC
 Student Services Center (Round Building)
 
 begin-description
-The placeholder
+The famous "Round Building"!
+Many students stand in a line for last minute financial aid.
 end-description
+
+begin-objects
+begin-object
+pay
+Pay for permit
+points
+5
+uses
+1
+directive
+You can pick up your permit from the UPD
+begin-description
+You can pay for your parking permit here.
+end-description
+end-object
+end-objects
+
+begin-exits
+OCNR Plaza
+A sliding door leads outside
+end-exits
+end-location
+
+
+
+begin-location
+UPD
+University Police Department
+
+begin-description
+There's two windows in front of you.
+end-description
+
+begin-objects
+begin-object
+permit
+Pick up your permit
+points
+5
+uses
+1
+directive
+Good job! Now you can explore the campus without tickets hanging over your head.
+begin-description
+You can pick up your permit here.
+end-description
+end-object
+end-objects
+
+begin-exits
+BW1
+A long path eventually leads to the breezeway
+end-exits
+end-location
+
+
+
+begin-location
+BW1
+Library Breezeway
+
+begin-description
+There are several tables set up.
+end-description
+
+begin-exits
+OCNR Plaza
+The OCNR Plaza is to the north
+UPD
+A long path eventually leads to the UPD
+end-exits
 end-location

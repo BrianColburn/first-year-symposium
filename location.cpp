@@ -51,6 +51,8 @@ map<string, location> parseLocations(string filename) {
 				loc.name = line;
 				cout << loc.uid << endl << loc.name << endl;
 				loc.directive = "";
+				map<string,object> empty;
+				loc.objects = empty;
 			}
 			
 			else if (line =="begin-description") {

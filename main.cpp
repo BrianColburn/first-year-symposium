@@ -62,6 +62,7 @@ void start_game(string user, string current_location, map<string,location> locs)
 	int loop = 0; // How long has the player been in this location?
 
 	getch(); // Wait for the user to press any key.
+	cout << "\e[H\e[2J";
 	do {
 		location loc = locs[current_location]; // This basically just saves typing.
 
@@ -71,7 +72,8 @@ void start_game(string user, string current_location, map<string,location> locs)
 		}
 
 		//Tell the player where they are, where they can go, and what they can touch.
-		cout << "\e[H\e[2JCurrent Location: " << loc.name << endl <<  loc.description << endl;
+		cout << "\e[H\e[2JName: " << user << "    Points: " << points << endl;
+		cout << "Current Location: " << loc.name << endl <<  loc.description << endl;
 		cout << "Exits:\n" << loc.list_exits() << endl;
 		cout << "Objects:\n" << loc.list_objects() << endl;
 
@@ -110,11 +112,11 @@ void start_game(string user, string current_location, map<string,location> locs)
 				}
 			}
 
-			cout << "...";
+			cout << "...\n";
 			getch(); // Wait for a keypress
 
 			if (obj.directive != "") {
-				cout << "\e[H\e[2J" << obj.directive << "\n...";
+				cout << obj.directive << "\n...";
 				getch();
 			}
 		}
