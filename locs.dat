@@ -19,6 +19,30 @@ There is a path that leads back to the OCNR Plaza and the CCH.
 end-exits
 
 begin-objects
+begin-object
+dave's note
+note name
+begin-description
+A note from dave
+end-description
+begin-directive
+> Test
+> Line 2
+
+end-directive
+end-object
+begin-object
+brian's note
+note name
+begin-description
+A note from brian
+end-description
+begin-directive
+> Hello, Campus.
+> Have a great break!
+
+end-directive
+end-object
 end-objects
 
 end-location

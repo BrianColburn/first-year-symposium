@@ -6,6 +6,7 @@
 #include <utility>
 #include <algorithm>
 #include <iomanip>
+#include <cstdlib>
 
 #include "location.h"
 #include "getch.h"
@@ -118,6 +119,78 @@ void start_game(string user, string current_location, map<string,location> locs)
 			if (obj.directive != "") {
 				cout << obj.directive << "\n...";
 				getch();
+			}
+		}
+
+		else if (input == "contribute") {
+			cout << "\e[H\e[2JWhat would you like to contribute?\n"
+				    "1) A Note\n"
+				    "2) An Object\n"
+				    "3) A Location\n"
+					"(otherwise, cancel)\n"
+				    "\n>> ";
+			char choice = getch();
+			cout << "\e[H\e[2J";
+
+			switch (choice) {
+				case '1': {
+					string message = "";
+					cout << "What would you like to write on the note? (Enter a '.' on an empty line to stop writing)\n"
+						    "Note from " << user << ":\n";
+					do {
+						cout << "> ";
+						getline(cin, input);
+						if (input != ".")
+							message += "> " + input + "\n";
+							// The '>' is to protect against injection attacks.
+							// Such as "end-directive<enter>LOCATION CODE"
+					} while (input != ".");
+
+					ifstream oldLocFile("locs.dat");
+					ofstream newLocFile("new-locs.dat");
+					string currentLine = "";
+					
+					// Skip through the file until we find our current location.
+					while (getline(oldLocFile, currentLine) && currentLine != current_location)
+						newLocFile << currentLine << endl;
+					newLocFile << currentLine << endl; // Add the location ID.
+					// Skip through the file until we begin defining objects.
+					while (getline(oldLocFile, currentLine) && currentLine != "begin-objects")
+						newLocFile << currentLine << endl;
+					newLocFile << currentLine << endl; // Add the "begin-objects"
+
+					// Now we add the note as an object.
+					newLocFile << "begin-object\n"
+					           << user << "'s note\n"
+							   << "note name\n"
+							   << "begin-description\n"
+							   << "A note from " << user << endl
+							   << "end-description\n"
+							   << "begin-directive\n"
+							   << message << endl
+							   << "end-directive\n"
+							   << "end-object\n";
+
+					// Write the rest of the file.
+					while (getline(oldLocFile, currentLine))
+							newLocFile << currentLine << endl;
+
+					points += 2;
+					oldLocFile.close();
+					newLocFile.close();
+					system("mv locs.dat \"locs.dat.bk.$(date +'%H%M%S')\"");
+					system("mv new-locs.dat locs.dat");
+
+					break;
+				}
+
+				case '2': {
+					break;
+				}
+
+				case '3': {
+					break;
+				}
 			}
 		}
 

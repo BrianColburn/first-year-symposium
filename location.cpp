@@ -205,10 +205,24 @@ map<string, object> parseObjects(ifstream& objFile) {
 						getline(objFile, line);
 						obj.directive = line;
 					}
+
+					else if (line =="begin-directive") { // This object has an objective.
+						obj.directive = "";
+						//cout << line << endl;
+						getline(objFile, line);
+						while (line != "end-directive") {
+							cout << line << endl; // Not insane
+							obj.directive += line + "\n";
+							getline(objFile, line);
+						}
+
+						cout << "exited directive\n"; // Still doing okay.
+					}
 					
 					else { // Apparently we aren't sane.
 						cout << "Unknown directive: " << line << endl;
 					}
+
 					getline(objFile, line);
 				}
 
