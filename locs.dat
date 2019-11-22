@@ -20,31 +20,6 @@ end-exits
 
 begin-objects
 begin-object
-test-obj
-redundant
-begin-description
- A very simple description
-end-description
-begin-directive
-end-directive
-points
-0
-uses
-3
-end-object
-begin-object
-dave's note
-note name
-begin-description
-A note from dave
-end-description
-begin-directive
-> Test
-> Line 2
-
-end-directive
-end-object
-begin-object
 brian's note
 note name
 begin-description
@@ -73,6 +48,8 @@ A view of the bay is visible from the north of CCH.
 end-description
 
 begin-exits
+CCH
+a test
 CCH2
 There are stairs leading to the second floor
 OCNR Plaza
@@ -147,6 +124,8 @@ BW1
 The Library Breezeway is to the South
 SSC
 The well known "Round Building" is to the South-East
+BH
+Sliding glass doors lead into Bay Hall
 end-exits
 
 begin-objects
@@ -264,4 +243,22 @@ The OCNR Plaza is to the north
 UPD
 A long path eventually leads to the UPD
 end-exits
+begin-objects
+end-objects
+end-location
+
+
+begin-location
+BH
+Bay Hall - First Floor
+begin-description
+ Enormous windows stretch from the floor to the ceiling before you
+ Class rooms surround you on all other sides
+end-description
+begin-exits
+OCNR Plaza
+Sliding doors lead out to the OCNR Plaza
+end-exits
+begin-directive
+end-directive
 end-location

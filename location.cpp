@@ -73,7 +73,20 @@ map<string, location> parseLocations(string filename) {
 				getline(locFile, line);
 				loc.directive = line;
 			}
-			
+
+			else if (line =="begin-directive") { // This location  has a directive.
+				loc.directive = "";
+				//cout << line << endl;
+				getline(locFile, line);
+				while (line != "end-directive") {
+					cout << line << endl; // Not insane
+					loc.directive += line + "\n";
+					getline(locFile, line);
+				}
+
+				cout << "exited directive\n"; // Still doing okay.
+			}
+	
 			else if (line == "begin-exits") {
 				map<string,string> exits; // Prepare an empty map for the exits.
 				                          //   The map associates the UID for an exit

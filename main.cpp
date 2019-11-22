@@ -181,6 +181,8 @@ void start_game(string user, string current_location, map<string,location> locs)
 					system("mv locs.dat \"locs.dat.bk.$(date +'%H%M%S')\"");
 					system("mv new-locs.dat locs.dat");
 
+					locs = parseLocations("locs.dat");
+
 					break;
 				}
 
@@ -190,23 +192,23 @@ void start_game(string user, string current_location, map<string,location> locs)
 					getline(cin, input);
 					
 					while (input.substr(0,6) == "begin-" || input.substr(0,4) == "end-") {
-						cout << "ID's cannot contain \"begin-\" or \"end-\"";
+						cout << "IDs cannot contain \"begin-\" or \"end-\"";
 						cout << "Enter an ID for the object: ";
 						getline(cin, input);
 					}
 					obj.uid = input;
 
-					cout << "Enter a description for the object. Type '.' to finish.";
+					cout << "Enter a description for the object. Type '.' to finish.\n";
 					do {
 						cout << "> ";
 						getline(cin, input);
 						if (input != ".")
 							obj.description += " " + input + "\n";
 							// The ' ' is to protect against injection attacks.
-							// Such as "end-directive<enter>LOCATION CODE"
+							// Such as "end-description<enter>LOCATION CODE"
 					} while (input != ".");
 
-					cout << "Does this object have a directive? [y/N]\n";
+					cout << "Should this object display anything when used? [y/N]\n";
 					choice = getch();
 					if ((choice & 95) == 'Y') {
 						cout << "Enter the directive for the object. Type '.' to finish.\n";
@@ -277,10 +279,113 @@ void start_game(string user, string current_location, map<string,location> locs)
 					system("mv locs.dat \"locs.dat.bk.$(date +'%H%M%S')\"");
 					system("mv new-locs.dat locs.dat");
 
+					locs = parseLocations("locs.dat");
+
 					break;
 				}
 
 				case '3': {
+					location new_loc;
+					string local_desc_to, local_desc_from;
+
+					cout << "Enter the UID for the location: ";
+					getline(cin, input);
+					
+					while (input.substr(0,6) == "begin-" || input.substr(0,4) == "end-") {
+						cout << "IDs cannot contain \"begin-\" or \"end-\"";
+						cout << "Enter an ID for the location: ";
+						getline(cin, input);
+					}
+					new_loc.uid = input;
+
+					cout << "Enter a name for the location: ";
+					getline(cin, input);
+					
+					while (input.substr(0,6) == "begin-" || input.substr(0,4) == "end-") {
+						cout << "Names cannot contain \"begin-\" or \"end-\"";
+						cout << "Enter an ID for the location: ";
+						getline(cin, input);
+					}
+					new_loc.name = input;
+
+					cout << "Enter a description for the exit to your new location\n"
+					        "[" << new_loc.uid << "]: ";
+					getline(cin, local_desc_to);
+
+					cout << "Enter a description for the exit from your new location to this location (" << loc.name << ")\n"
+					        "[" << loc.uid << "]: ";
+					getline(cin, local_desc_from);
+
+					cout << "Enter a description for the location. Type '.' to finish.\n";
+					do {
+						cout << "> ";
+						getline(cin, input);
+						if (input != ".")
+							new_loc.description += " " + input + "\n";
+							// The ' ' is to protect against injection attacks.
+							// Such as "end-description<enter>LOCATION CODE"
+					} while (input != ".");
+
+					cout << "Should this location display anything when entered? [y/N]\n";
+					choice = getch();
+					if ((choice & 95) == 'Y') {
+						cout << "Enter the directive for the location. Type '.' to finish.\n";
+						do {
+							cout << "> ";
+							getline(cin, input);
+							if (input != ".")
+								new_loc.directive += "> " + input + "\n";
+								// The '>' is to protect against injection attacks.
+								// Such as "end-directive<enter>LOCATION CODE"
+						} while (input != ".");
+					}
+
+					ifstream oldLocFile("locs.dat");
+					ofstream newLocFile("new-locs.dat");
+					string currentLine = "";
+					
+					// Skip through the file until we find our current location.
+					while (getline(oldLocFile, currentLine) && currentLine != current_location)
+						newLocFile << currentLine << endl;
+					newLocFile << currentLine << endl; // Add the location ID.
+					// Skip through the file until we begin defining exits.
+					while (getline(oldLocFile, currentLine) && currentLine != "begin-exits")
+						newLocFile << currentLine << endl;
+					newLocFile << currentLine << endl; // Add the "begin-exits"
+
+					newLocFile << new_loc.uid << endl << local_desc_to << endl;
+
+					// Write the rest of the file.
+					while (getline(oldLocFile, currentLine))
+							newLocFile << currentLine << endl;
+
+					
+					// Now we add the note as an location.
+					newLocFile << "\n\n\nbegin-location\n"
+					           << new_loc.uid << endl
+							   << new_loc.name << endl
+							   << "begin-description\n"
+							   << new_loc.description
+							   << "end-description\n"
+							   << "begin-exits\n"
+							   << loc.uid << endl
+							   << local_desc_from << endl
+							   << "end-exits\n"
+							   << "begin-directive\n"
+							   << new_loc.directive
+							   << "end-directive\n"
+							   << "begin-objects\n"
+							   << "end-objects\n"
+							   << "end-location\n";
+
+					points += 100;
+					oldLocFile.close();
+					newLocFile.close();
+					system("mv locs.dat \"locs.dat.bk.$(date +'%H%M%S')\"");
+					system("mv new-locs.dat locs.dat");
+
+					locs = parseLocations("locs.dat");
+
 					break;
 				}
 			}
@@ -304,7 +409,10 @@ void start_game(string user, string current_location, map<string,location> locs)
 				cout << loc.list_exits();
 			}
 			// We don't know what to do with the player's input.
-			else cout << "Unknown command \"" << input << "\"\n";
+			else {
+				cout << "Unknown command \"" << input << "\"\n";
+				getch();
+			}
 		}
 		loop++;
 	} while (input != "quit"); // If they want to quit, stop the game loop.
@@ -419,7 +527,10 @@ void menu(map<string,location> locs) {
 
 //Displays the credits
 void credits() {
-	cout << "The credits\n";
+	cout << "\e[H\e2JBrought to you by\n"
+		    "AJ Martinez\n"
+			"Brian Colburn\n"
+			"Natasha Pfeiffer\n";
 }
 
 void highscores() {
