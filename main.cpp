@@ -185,6 +185,98 @@ void start_game(string user, string current_location, map<string,location> locs)
 				}
 
 				case '2': {
+					object obj;
+					cout << "Enter an ID for the object: ";
+					getline(cin, input);
+					
+					while (input.substr(0,6) == "begin-" || input.substr(0,4) == "end-") {
+						cout << "ID's cannot contain \"begin-\" or \"end-\"";
+						cout << "Enter an ID for the object: ";
+						getline(cin, input);
+					}
+					obj.uid = input;
+
+					cout << "Enter a description for the object. Type '.' to finish.";
+					do {
+						cout << "> ";
+						getline(cin, input);
+						if (input != ".")
+							obj.description += " " + input + "\n";
+							// The ' ' is to protect against injection attacks.
+							// Such as "end-directive<enter>LOCATION CODE"
+					} while (input != ".");
+
+					cout << "Does this object have a directive? [y/N]\n";
+					choice = getch();
+					if ((choice & 95) == 'Y') {
+						cout << "Enter the directive for the object. Type '.' to finish.\n";
+						do {
+							cout << "> ";
+							getline(cin, input);
+							if (input != ".")
+								obj.directive += "> " + input + "\n";
+								// The '>' is to protect against injection attacks.
+								// Such as "end-directive<enter>LOCATION CODE"
+						} while (input != ".");
+					}
+
+					cout << "Does this object have a limited number of uses? [y/N]\n";
+					choice = getch();
+					if ((choice & 95) == 'Y') {
+						cout << "Enter the number of uses: ";
+						getline(cin, input);
+						obj.uses = stoi(input);
+					}
+
+					cout << "Is this object worth any points? [y/N]\n";
+					choice = getch();
+					if ((choice & 95) == 'Y') {
+						cout << "Enter the number of points (up to " << points << "): ";
+						getline(cin, input);
+						obj.points = stoi(input);
+						if (obj.points > points)
+							obj.points = points;
+					}
+
+					ifstream oldLocFile("locs.dat");
+					ofstream newLocFile("new-locs.dat");
+					string currentLine = "";
+					
+					// Skip through the file until we find our current location.
+					while (getline(oldLocFile, currentLine) && currentLine != current_location)
+						newLocFile << currentLine << endl;
+					newLocFile << currentLine << endl; // Add the location ID.
+					// Skip through the file until we begin defining objects.
+					while (getline(oldLocFile, currentLine) && currentLine != "begin-objects")
+						newLocFile << currentLine << endl;
+					newLocFile << currentLine << endl; // Add the "begin-objects"
+
+					// Now we add the note as an object.
+					newLocFile << "begin-object\n"
+					           << obj.uid << endl
+							   << "redundant" << endl
+							   << "begin-description\n"
+							   << obj.description
+							   << "end-description\n"
+							   << "begin-directive\n"
+							   << obj.directive
+							   << "end-directive\n"
+							   << "points\n"
+							   << obj.points << endl
+							   << "uses\n"
+							   << obj.uses << endl
+							   << "end-object\n";
+
+					// Write the rest of the file.
+					while (getline(oldLocFile, currentLine))
+							newLocFile << currentLine << endl;
+
+					points += 20;
+					oldLocFile.close();
+					newLocFile.close();
+					system("mv locs.dat \"locs.dat.bk.$(date +'%H%M%S')\"");
+					system("mv new-locs.dat locs.dat");
+
 					break;
 				}
 

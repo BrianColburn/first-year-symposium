@@ -20,6 +20,19 @@ end-exits
 
 begin-objects
 begin-object
+test-obj
+redundant
+begin-description
+ A very simple description
+end-description
+begin-directive
+end-directive
+points
+0
+uses
+3
+end-object
+begin-object
 dave's note
 note name
 begin-description

@@ -34,7 +34,10 @@ class location {
 		string list_objects() {
 			string result = "";
 			for (map<string, object>::iterator object = objects.begin(); object != objects.end(); ++object) {
-				result += "[" + object->first + "]: " +  object->second.description;
+				result += "[" + object->first + "]";
+				if (object->second.uses)
+					result += "(" + to_string(object->second.uses) + ")";
+				result += ": " +  object->second.description;
 				result += "\n";
 			}
 			return result;
