@@ -26,7 +26,11 @@ begin-description
 A note from brian
 end-description
 begin-directive
-> Hello, Campus.
+> Hello, Campus,
+> 
+> You can exit the game by typing "quit".
+> To contribute, type "contribute".
+>
 > Have a great break!
 
 end-directive

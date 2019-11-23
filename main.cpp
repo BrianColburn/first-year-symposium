@@ -227,6 +227,10 @@ void start_game(string user, string current_location, map<string,location> locs)
 					if ((choice & 95) == 'Y') {
 						cout << "Enter the number of uses: ";
 						getline(cin, input);
+						while (input.find_first_not_of("1234567890") != std::string::npos) {
+							cout << "Enter a positive number: ";
+							cin >> input;
+						}
 						obj.uses = stoi(input);
 					}
 
@@ -235,6 +239,10 @@ void start_game(string user, string current_location, map<string,location> locs)
 					if ((choice & 95) == 'Y') {
 						cout << "Enter the number of points (up to " << points << "): ";
 						getline(cin, input);
+						while (input.find_first_not_of("1234567890") != std::string::npos) {
+							cout << "Enter a positive number: ";
+							cin >> input;
+						}
 						obj.points = stoi(input);
 						if (obj.points > points)
 							obj.points = points;
@@ -527,7 +535,7 @@ void menu(map<string,location> locs) {
 
 //Displays the credits
 void credits() {
-	cout << "\e[H\e2JBrought to you by\n"
+	cout << "\e[H\e[2JBrought to you by\n"
 		    "AJ Martinez\n"
 			"Brian Colburn\n"
 			"Natasha Pfeiffer\n";
